@@ -1,0 +1,57 @@
+﻿@{
+    ViewData["Title"] = "Movie Form";
+}
+
+@model Mission6.Models.FormResponse
+
+
+
+<h1> Lets fill out a Form!!!</h1>
+
+<div>
+    <form method="post">
+        <label asp-for="Category">Movie Category:</label>
+        <input asp-for="Category" required/><br />
+
+        <label asp-for="Title">Movie Title:</label>
+        <input asp-for="Title" required/><br />
+
+        <label asp-for="Year">Movie Year:</label>
+        <input asp-for="Year" required/><br />
+
+        <label asp-for="Director">Movie Director:</label>
+        <input asp-for="Director" required /><br />
+
+        <label asp-for="Rating">Movie Rating:</label>
+        <select asp-for="Rating" required>
+            <option value="G">G</option>
+            <option value="PG">PG</option>
+            <option value="PG-13">PG-13</option>
+            <option value="R">R</option>
+        </select><br />
+
+        <label asp-for="Edited">Edited:</label>
+        <select asp-for="Edited">
+            <option value="true">Yes</option>
+            <option value="false">No</option>
+        </select><br />
+
+        <label asp-for="LentTo">Lent To:</label>
+        <input asp-for="LentTo" /><br />
+
+        <label asp-for="Notes">Notes:</label>
+        <input asp-for="Notes" maxlength="25" /><br />
+
+        <button type="submit">Submitt the Form</button>
+
+    </form>
+</div>
+
+@*//category
+//title
+//year
+//director
+//rating
+// edited
+//lent to
+// notes*@
