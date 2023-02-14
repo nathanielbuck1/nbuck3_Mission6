@@ -17,6 +17,7 @@ namespace Mission6.Models
 
         public DbSet<FormResponse> responses { get; set; }
 
+        //Load em up!
         protected override void OnModelCreating(ModelBuilder mb)
         {
             mb.Entity<FormResponse>().HasData(

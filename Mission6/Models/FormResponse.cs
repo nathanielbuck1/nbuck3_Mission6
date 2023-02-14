@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Mission6.Models
 {
+    //Getters and setters
     public class FormResponse
     {
         [Key]

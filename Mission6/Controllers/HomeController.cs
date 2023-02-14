@@ -7,8 +7,13 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
+
+//Nathaniel Buck
+//    Section 4
+
 namespace Mission6.Controllers
 {
+    //Controller
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -29,11 +34,13 @@ namespace Mission6.Controllers
         {
             return View();
         }
+        //Getter
         [HttpGet]
         public IActionResult FillOutForm ()
         {
             return View("addMovies");
         }
+        //POST
         [HttpPost]
         public IActionResult FillOutForm(FormResponse fr)
         {
