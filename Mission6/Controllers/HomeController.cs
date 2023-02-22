@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Mission6.Models;
 using System;
@@ -16,13 +17,11 @@ namespace Mission6.Controllers
     //Controller
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-        private movieFormContext _blahContext { get; set; }
+        private movieFormContext daContext { get; set; }
 
-        public HomeController(ILogger<HomeController> logger, movieFormContext someName)
+        public HomeController(movieFormContext someName)
         {
-            _logger = logger;
-            _blahContext = someName;
+            daContext = someName;
         }
 
         public IActionResult Index()
@@ -30,34 +29,92 @@ namespace Mission6.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-        //Getter
+        //Getter for the filling of the form
         [HttpGet]
         public IActionResult FillOutForm ()
         {
+            ViewBag.Categories = daContext.Categories.ToList();
+
+            //var Categories = daContext.Categories.ToList();
+
             return View("addMovies");
+            //return View(Categories);
         }
-        //POST
+        //POST for the filling of the form
         [HttpPost]
         public IActionResult FillOutForm(FormResponse fr)
         {
-            _blahContext.Add(fr);
-            _blahContext.SaveChanges();
+            if (ModelState.IsValid)
+            {
+                //ViewBag.Categories = daContext.Categories.ToList();
+                daContext.Add(fr);
+                daContext.SaveChanges();
 
-            return View("Confirm", fr);
+                return View("Confirm", fr);
+            }
+            else //if not valid
+            {
+                ViewBag.Categories = daContext.Categories.ToList();
+                return View("AddMovies");
+            }
+
         }
+
+        //this is the List of Movies
+        public IActionResult Waitlist ()
+        {
+            var applications = daContext.Responses.Include(x => x.Category)
+                //.Where(x=> x.Rating == 'PG')
+                .OrderBy(x=> x.Title).ToList();
+
+            return View(applications);
+        }
+
+        //getter for the editing of fields
+        [HttpGet]
+        public IActionResult Edit (int AppID)
+        {
+            ViewBag.Categories = daContext.Categories.ToList();
+
+            var application = daContext.Responses.Single(x => x.AppID == AppID);
+
+            return View("addMovies" , application);
+        }
+
+        //Post for the editing of fields
+        [HttpPost]
+        public IActionResult Edit(FormResponse blah)
+        {
+            daContext.Update(blah);
+            daContext.SaveChanges();
+
+            return RedirectToAction("WaitList");
+        }
+
+        //Getter for deleting
+        [HttpGet]
+        public IActionResult Delete( int appID)
+        {
+            var application = daContext.Responses.Single(x => x.AppID == appID);
+
+            return View(application);
+        }
+
+        //Post for deleting
+        [HttpPost]
+        public IActionResult Delete(FormResponse fr)
+        {
+            daContext.Responses.Remove(fr);
+            daContext.SaveChanges();
+            
+            return RedirectToAction("WaitList");
+        }
+
         public IActionResult GoToMyPodcasts()
         {
             return View("myPodcasts");
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
+
     }
 }
