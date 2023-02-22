@@ -15,14 +15,70 @@ namespace Mission6.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.1.32");
 
+            modelBuilder.Entity("Mission6.Models.Category", b =>
+                {
+                    b.Property<int>("CategoryID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("CategoryName")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("CategoryID");
+
+                    b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            CategoryID = 1,
+                            CategoryName = "Action/Adventure"
+                        },
+                        new
+                        {
+                            CategoryID = 2,
+                            CategoryName = "Horror/Suspense"
+                        },
+                        new
+                        {
+                            CategoryID = 3,
+                            CategoryName = "Comedy"
+                        },
+                        new
+                        {
+                            CategoryID = 4,
+                            CategoryName = "Drama"
+                        },
+                        new
+                        {
+                            CategoryID = 5,
+                            CategoryName = "Miscellaneous"
+                        },
+                        new
+                        {
+                            CategoryID = 6,
+                            CategoryName = "Television"
+                        },
+                        new
+                        {
+                            CategoryID = 7,
+                            CategoryName = "VHS"
+                        },
+                        new
+                        {
+                            CategoryID = 8,
+                            CategoryName = "Other"
+                        });
+                });
+
             modelBuilder.Entity("Mission6.Models.FormResponse", b =>
                 {
                     b.Property<int>("AppID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Category")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("CategoryID")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Director")
                         .HasColumnType("TEXT");
@@ -47,13 +103,15 @@ namespace Mission6.Migrations
 
                     b.HasKey("AppID");
 
-                    b.ToTable("responses");
+                    b.HasIndex("CategoryID");
+
+                    b.ToTable("Responses");
 
                     b.HasData(
                         new
                         {
                             AppID = 1,
-                            Category = "Action",
+                            CategoryID = 1,
                             Director = "Nathaniel",
                             Edited = true,
                             LentTo = "Yo MAMA",
@@ -65,7 +123,7 @@ namespace Mission6.Migrations
                         new
                         {
                             AppID = 2,
-                            Category = "Action",
+                            CategoryID = 1,
                             Director = "Buck",
                             Edited = true,
                             LentTo = "Yo MAMA",
@@ -77,7 +135,7 @@ namespace Mission6.Migrations
                         new
                         {
                             AppID = 3,
-                            Category = "Action",
+                            CategoryID = 2,
                             Director = "Tadao",
                             Edited = true,
                             LentTo = "Yo MAMA",
@@ -86,6 +144,15 @@ namespace Mission6.Migrations
                             Title = "The Mid one",
                             Year = 2020
                         });
+                });
+
+            modelBuilder.Entity("Mission6.Models.FormResponse", b =>
+                {
+                    b.HasOne("Mission6.Models.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

@@ -15,11 +15,26 @@ namespace Mission6.Models
 
         }
 
-        public DbSet<FormResponse> responses { get; set; }
+        public DbSet<FormResponse> Responses { get; set; }
+        public DbSet<Category> Categories { get; set; }
 
-        //Load em up!
+        //Load em up! Seed em baby!!!!
         protected override void OnModelCreating(ModelBuilder mb)
         {
+
+            mb.Entity<Category>().HasData(
+                new Category { CategoryID = 1, CategoryName = "Action/Adventure" },
+                new Category { CategoryID = 2, CategoryName = "Horror/Suspense" },
+                new Category { CategoryID = 3, CategoryName = "Comedy" },
+                new Category { CategoryID = 4, CategoryName = "Drama" },
+                new Category { CategoryID = 5, CategoryName = "Miscellaneous" },
+                new Category { CategoryID = 6, CategoryName = "Television" },
+                new Category { CategoryID = 7, CategoryName = "VHS" },
+                new Category { CategoryID = 8, CategoryName = "Other" }
+
+                );
+
+
             mb.Entity<FormResponse>().HasData(
 
                 new FormResponse
@@ -34,7 +49,7 @@ namespace Mission6.Models
                       //lent to
                       // notes*@
                     AppID = 1,
-                    Category = "Action",
+                    CategoryID = 1,
                     Title = "The great one",
                     Year = 1999,
                     Director = "Nathaniel",
@@ -46,7 +61,7 @@ namespace Mission6.Models
                 new FormResponse
                 {
                     AppID = 2,
-                    Category = "Action",
+                    CategoryID = 1,
                     Title = "The last one",
                     Year = 1989,
                     Director = "Buck",
@@ -58,7 +73,7 @@ namespace Mission6.Models
                 new FormResponse
                 {
                     AppID = 3,
-                    Category = "Action",
+                    CategoryID = 2,
                     Title = "The Mid one",
                     Year = 2020,
                     Director = "Tadao",
